@@ -1,0 +1,21 @@
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
+
+<div id="calendar"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      selectable: true,
+      dateClick: function (info) {
+        alert("You clicked: " + info.dateStr);
+        // Later: redirect or open modal to reserve
+      },
+      events: '/events' // Flask route to fetch events
+    });
+    calendar.render();
+  });
+</script>
+

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form id="multiStepForm" method="POST" enctype="multipart/form-data">
+  <div class="form-step active">
+    <h2>Step 1: Applicant Details & Insurance</h2>
+
+    <label>Applicant Name</label>
+    <input type="text" name="applicant_name" required>
+
+    <label>ABN</label>
+    <input type="text" name="abn">
+
+    <label>Contact Name</label>
+    <input type="text" name="contact_name" required>
+
+    <label>Email</label>
+    <input type="email" name="email" required>
+
+    <label>Phone</label>
+    <input type="tel" name="phone">
+
+    <label>Upload Insurance Certificate</label>
+    <input type="file" name="insurance_file">
+
+    <div class="btns-group">
+      <button type="button" class="btn btn-next">Next</button>
+    </div>
+  </div>
+{% endblock %}

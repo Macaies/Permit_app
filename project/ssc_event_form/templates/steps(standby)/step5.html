@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-step">
+  <h2>Step 5: Community</h2>
+
+  <label>Noise Management</label>
+  <textarea name="noise"></textarea>
+
+  <label>First Aid / Medical</label>
+  <textarea name="first_aid"></textarea>
+
+  <label>Volunteers Involved?</label>
+  <select name="volunteers">
+    <option value="No">No</option>
+    <option value="Yes">Yes</option>
+  </select>
+
+  <label>Community Engagement</label>
+  <textarea name="community_engagement"></textarea>
+
+  <div class="btns-group">
+    <button type="button" class="btn btn-prev">Previous</button>
+    <button type="button" class="btn btn-next">Next</button>
+  </div>
+</div>
+{% endblock %}

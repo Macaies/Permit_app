@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-step">
+  <h2>Step 3: Operations & Facilities</h2>
+
+  <label>Food Served?</label>
+  <select name="food_served">
+    <option value="No">No</option>
+    <option value="Yes">Yes</option>
+  </select>
+
+  <label>Food Details</label>
+  <textarea name="food_details"></textarea>
+
+  <label>Alcohol?</label>
+  <select name="alcohol">
+    <option value="No">No</option>
+    <option value="Yes">Yes</option>
+  </select>
+
+  <label>Liquor Licence Holder</label>
+  <input type="text" name="liquor_holder">
+
+  <label>Dispensing Areas</label>
+  <input type="text" name="dispensing_areas">
+
+  <label>Consumption Boundaries</label>
+  <textarea name="consumption_boundaries"></textarea>
+
+  <label>Need Council Electricity?</label>
+  <select name="council_electricity">
+    <option value="No">No</option>
+    <option value="Yes">Yes</option>
+  </select>
+
+  <label>Electricity Details</label>
+  <textarea name="electricity_details"></textarea>
+
+  <label>Use Generators?</label>
+  <select name="generators">
+    <option value="No">No</option>
+    <option value="Yes">Yes</option>
+  </select>
+
+  <div class="btns-group">
+    <button type="button" class="btn btn-prev">Previous</button>
+    <button type="button" class="btn btn-next">Next</button>
+  </div>
+</div>
+{% endblock %}

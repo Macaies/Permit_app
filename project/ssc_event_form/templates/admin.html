@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+
+  <!-- Actions -->
+  <div class="admin-actions">
+    <a href="{{ url_for('export') }}" class="btn-export">⬇ Export to CSV</a>
+
+    <form method="GET" action="{{ url_for('admin') }}" class="search-form">
+      <input type="text" name="q" placeholder="Search by applicant or event..."
+             value="{{ request.args.get('q', '') }}">
+      <button type="submit">Search</button>
+      {% if request.args.get('q') %}
+        <a href="{{ url_for('admin') }}" class="clear-search">✖ Clear</a>
+      {% endif %}
+    </form>
+  </div>
+
+  <!-- Table -->
+  {% if rows %}
+    <div class="table-card fade-in">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Applicant</th>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Attendance</th>
+            <th>Alcohol</th>
+            <th>Noise</th>
+            <th>Insurance</th>
+            <th>Site Map</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row['id'] }}</td>
+            <td>{{ row['applicant_name'] }}</td>
+            <td>{{ row['event_name'] }}</td>
+            <td>{{ row['event_date'] }}</td>
+            <td>{{ row['attendance'] or '-' }}</td>
+            <td>{{ row['alcohol'] or '-' }}</td>
+            <td>{{ row['noise'] or '-' }}</td>
+            <td>
+              {% if row['insurance_file'] %}
+                <a class="file-link" href="{{ url_for('uploaded_file', filename=row['insurance_file']) }}" target="_blank">View</a>
+              {% else %}-{% endif %}
+            </td>
+            <td>
+              {% if row['site_map'] %}
+                <a class="file-link" href="{{ url_for('uploaded_file', filename=row['site_map']) }}" target="_blank">View</a>
+              {% else %}-{% endif %}
+            </td>
+            <td>
+              <details>
+                <summary>Expand</summary>
+                <pre>{{ row | tojson(indent=2) }}</pre>
+              </details>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No applications submitted yet.</p>
+  {% endif %}
+
+</div>
+{% endblock %}

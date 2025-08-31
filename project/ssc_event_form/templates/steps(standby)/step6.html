@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-step">
+  <h2>Step 6: Declaration</h2>
+
+  <label>
+    <input type="checkbox" name="declaration" required>
+    I confirm that all information provided is true and correct.
+  </label>
+
+  <label>Signature (type full name)</label>
+  <input type="text" name="signature" required>
+
+  <label>Date</label>
+  <input type="date" name="declaration_date" required>
+
+  <div class="btns-group">
+    <button type="button" class="btn btn-prev">Previous</button>
+    <button type="submit" class="btn">Submit</button>
+  </div>
+</div>
+{% endblock %}

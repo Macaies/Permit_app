@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <!-- Progress Bar -->
+  <div class="progressbar">
+    <div class="progress-step active" data-title="Applicant"></div>
+    <div class="progress-step" data-title="Attendance"></div>
+    <div class="progress-step" data-title="Activities"></div>
+    <div class="progress-step" data-title="Insurance"></div>
+    <div class="progress-step" data-title="Community"></div>
+    <div class="progress-step" data-title="Declaration"></div>
+    <div class="progress-step" data-title="Checklist"></div>
+  </div>
+
+  <!-- Multi-step Form -->
+  <form action="{{ url_for('submit') }}" method="POST" enctype="multipart/form-data" id="multiStepForm">
+
+    <!-- Step 1: Applicant & Event Details -->
+    <div class="form-step active fade-slide">
+      <h2>Step 1: Applicant & Event Details</h2>
+      <label>Applicant Name *</label>
+      <input type="text" name="applicant_name" required>
+
+      <label>Organisation (if applicable)</label>
+      <input type="text" name="organisation">
+
+      <label>Contact Email *</label>
+      <input type="email" name="email" required>
+
+      <label>Phone *</label>
+      <input type="tel" name="phone" required>
+
+      <label>Event Name *</label>
+      <input type="text" name="event_name" required>
+
+      <label>Event Location *</label>
+      <input type="text" name="event_location" id="eventLocation" required>
+      <p id="locationStatus" class="status-msg"></p>
+
+      <label>Event Date *</label>
+      <input type="date" name="event_date" required>
+
+      <label>Start Time *</label>
+      <input type="time" name="start_time" required>
+
+      <label>Finish Time *</label>
+      <input type="time" name="finish_time" required>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Attendance & Infrastructure -->
+    <div class="form-step fade-slide">
+      <h2>Step 2: Attendance & Infrastructure</h2>
+      <label>Expected Attendance *</label>
+      <input type="number" name="attendance" min="1" required>
+
+      <label>Will the event require building approvals?</label>
+      <select name="building_approval" required>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <label>Will ground-piercing devices be used?</label>
+      <select name="ground_piercing" required>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <label>Duration *</label>
+      <select name="duration" required>
+        <option value="<=2 days">2 consecutive days or less</option>
+        <option value="<=12 days">≤12 non-consecutive days in 12 months</option>
+        <option value="More">More</option>
+      </select>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Activities & Risk -->
+    <div class="form-step fade-slide">
+      <h2>Step 3: Activities & Risk</h2>
+      <label>Firearms, fireworks, or high-risk activities?</label>
+      <select name="high_risk" required>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <label>Alcohol served or consumed?</label>
+      <select name="alcohol" required>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <label>Amplified noise exceeding 95dBC?</label>
+      <select name="noise" required>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <label>Vehicle/machinery access to public space?</label>
+      <select name="vehicle_access" required>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Insurance & Documentation -->
+    <div class="form-step fade-slide">
+      <h2>Step 4: Insurance & Documentation</h2>
+      <label>Upload Public Liability Insurance *</label>
+      <input type="file" name="insurance" accept=".pdf,.jpg,.png" required>
+
+      <label>Upload Site Map *</label>
+      <input type="file" name="site_map" accept=".pdf,.jpg,.png" required>
+
+      <label>Upload Risk Management Plan (if required)</label>
+      <input type="file" name="risk_plan" accept=".pdf,.doc,.docx">
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Community & Compliance -->
+    <div class="form-step fade-slide">
+      <h2>Step 5: Community & Compliance</h2>
+      <label>Waste Management Plan *</label>
+      <textarea name="waste_plan" required></textarea>
+
+      <label>First Aid available?</label>
+      <select name="first_aid" required>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label>Number of volunteers/staff *</label>
+      <input type="number" name="volunteers" min="0" required>
+
+      <label>Communication Plan *</label>
+      <textarea name="communication_plan" required></textarea>
+
+      <label>Facilities remain accessible?</label>
+      <select name="facilities_access" required>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Declaration -->
+    <div class="form-step fade-slide">
+      <h2>Step 6: Declaration</h2>
+      <p>Please confirm the information provided is accurate.</p>
+
+      <label>
+        <input type="checkbox" required>
+        I declare the information is true and correct.
+      </label>
+
+      <label>Full Name (Digital Signature) *</label>
+      <input type="text" name="digital_signature" required>
+
+      <label>Date *</label>
+      <input type="date" name="declaration_date" required>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Self-Assessable Checklist -->
+    <div class="form-step fade-slide">
+      <h2>Step 7: Self-Assessable Event Checklist</h2>
+      <p>Please confirm your event meets the following criteria:</p>
+
+      <label><input type="checkbox" name="checklist_attendance"> Less than 200 attendees</label>
+      <label><input type="checkbox" name="checklist_infra"> No building approvals or ground piercing</label>
+      <label><input type="checkbox" name="checklist_traffic"> No traffic management</label>
+      <label><input type="checkbox" name="checklist_days"> ≤2 consecutive or ≤12 non-consecutive days</label>
+      <label><input type="checkbox" name="checklist_risk"> No high-risk activities</label>
+      <label><input type="checkbox" name="checklist_time"> Starts after 5:30am or 7am</label>
+      <label><input type="checkbox" name="checklist_finish"> Finishes before 10pm</label>
+      <label><input type="checkbox" name="checklist_alcohol"> No alcohol served or consumed</label>
+      <label><input type="checkbox" name="checklist_noise"> No amplified noise >95dBC</label>
+      <label><input type="checkbox" name="checklist_vehicle"> No vehicle access to public space</label>
+      <label><input type="checkbox" name="checklist_verge"> No verge/pathway obstruction</label>
+      <label><input type="checkbox" name="checklist_facilities"> Community facilities remain accessible</label>
+      <label><input type="checkbox" name="checklist_first_aid"> First aid available on site</label>
+      <label><input type="checkbox" name="checklist_waste"> Waste management plan in place</label>
+      <label><input type="checkbox" name="checklist_docs"> Insurance and site map uploaded</label>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="submit" class="btn">Submit Application</button>
+      </div>
+    </div>
+
+  </form>
+</div>
+{% endblock %}

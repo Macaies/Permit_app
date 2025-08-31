@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Sunshine Coast Council - Event Application{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <a href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Council Logo" class="logo">
+    </a>
+    <h1 class="site-title">Sunshine Coast Council - Event Permit Application</h1>
+  </header>
+
+  <!-- Main Container -->
+  <main class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/form.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/location.js') }}"></script>
+</body>
+</html>

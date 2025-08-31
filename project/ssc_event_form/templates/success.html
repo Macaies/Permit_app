@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h2>✅ Application Submitted Successfully</h2>
+  <p>Thank you, <strong>{{ form.digital_signature }}</strong>. Your event <strong>"{{ form.event_name }}"</strong> has been submitted.</p>
+
+  <h3>📋 Submission Summary</h3>
+  <ul>
+    <li><strong>Event Date:</strong> {{ form.event_date }}</li>
+    <li><strong>Location:</strong> {{ form.event_location }}</li>
+    <li><strong>Attendance:</strong> {{ form.attendance }}</li>
+    <li><strong>Alcohol:</strong> {{ form.alcohol }}</li>
+    <li><strong>Duration:</strong> {{ form.duration }}</li>
+    <li><strong>Eligibility:</strong> {{ form.self_assessable }}</li>
+    <li><strong>Location Validity:</strong> {{ form.location_valid }}</li>
+    <li><strong>Calendar Status:</strong> {{ form.calendar_status }}</li>
+    <li><strong>Insurance File:</strong> {{ form.insurance_file }}</li>
+    <li><strong>Site Map:</strong> {{ form.site_map }}</li>
+  </ul>
+
+  <a href="{{ url_for('index') }}" class="btn">Submit Another Application</a>
+</div>
+{% endblock %}

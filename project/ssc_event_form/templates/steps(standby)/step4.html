@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-step">
+  <h2>Step 4: Logistics</h2>
+
+  <label>Parking Available?</label>
+  <select name="parking">
+    <option value="No">No</option>
+    <option value="Yes">Yes</option>
+  </select>
+
+  <label>Traffic Management Plan</label>
+  <textarea name="traffic_plan"></textarea>
+
+  <label>Security Arrangements</label>
+  <textarea name="security"></textarea>
+
+  <label>Waste Management</label>
+  <textarea name="waste"></textarea>
+
+  <div class="btns-group">
+    <button type="button" class="btn btn-prev">Previous</button>
+    <button type="button" class="btn btn-next">Next</button>
+  </div>
+</div>
+{% endblock %}
