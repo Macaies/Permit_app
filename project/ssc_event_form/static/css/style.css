@@ -26,8 +26,10 @@ body {
 
 .site-header .logo {
   height: 80px;
+  max-width: 100%;
   margin-bottom: 10px;
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
 
 .site-header .logo:hover {
@@ -35,9 +37,11 @@ body {
 }
 
 .site-title {
+  margin-top: 10px;
   font-size: 1.8rem;
   font-weight: bold;
   letter-spacing: 1px;
+  color: #fff;
 }
 
 /* ---------- Main Container ---------- */
@@ -48,7 +52,7 @@ body {
 }
 
 /* ---------- Buttons ---------- */
-.btn, .btn-export, .search-form button {
+.btn, .btn-export, .search-form button, .btn-calendar {
   background: #0073e6;
   color: white;
   padding: 10px 18px;
@@ -60,7 +64,7 @@ body {
   transition: background 0.2s ease;
 }
 
-.btn:hover, .btn-export:hover, .search-form button:hover {
+.btn:hover, .btn-export:hover, .search-form button:hover, .btn-calendar:hover {
   background: #005bb5;
 }
 
@@ -152,6 +156,11 @@ form textarea {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+input.error, select.error, textarea.error {
+  border-color: #f44336;
+  background-color: #fff5f5;
 }
 
 /* ---------- Success Page ---------- */
@@ -246,6 +255,182 @@ table tbody tr:hover {
   text-decoration: underline;
 }
 
+/* ---------- Admin Table Actions ---------- */
+.table-card td .btn,
+.table-card td .btn-danger {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 13px;
+  margin: 2px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.table-card td .btn {
+  background: #2ecc71;
+  color: white;
+}
+.table-card td .btn:hover {
+  background: #27ae60;
+}
+
+.table-card td .btn-danger {
+  background: #e74c3c;
+  color: white;
+}
+.table-card td .btn-danger:hover {
+  background: #c0392b;
+}
+
+/* Status labels */
+.status-label {
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 4px;
+  display: inline-block;
+}
+.status-confirmed {
+  background: #eafaf1;
+  color: #2ecc71;
+  border: 1px solid #2ecc71;
+}
+.status-rejected {
+  background: #fdecea;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+.status-pending {
+  background: #fff6e5;
+  color: #e67e22;
+  border: 1px solid #e67e22;
+}
+
+/* ---------- Checklist Summary (Step 7) ---------- */
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.checklist li {
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.checklist li.ok {
+  background: #e9f9f0;
+  color: #2e7d32;
+  border-left: 4px solid #2ecc71;
+}
+
+.checklist li.fail {
+  background: #ffeaea;
+  color: #c62828;
+  border-left: 4px solid #e74c3c;
+}
+
+.checklist li::before {
+  content: "✔";
+  margin-right: 8px;
+  font-weight: bold;
+  color: inherit;
+}
+
+.checklist li.fail::before {
+  content: "✖";
+}
+
+/* Hover effect */
+.checklist li:hover {
+  transform: translateX(3px);
+}
+
+/* ---------- Calendar Section ---------- */
+.calendar-container {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.calendar-container h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #004a8f;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-cell {
+  padding: 15px 0;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-cell.available {
+  background: #e8f4ff;
+  border: 1px solid #90caf9;
+  color: #004a8f;
+}
+
+.calendar-cell.booked {
+  background: #ffeaea;
+  border: 1px solid #ef9a9a;
+  color: #c62828;
+  cursor: not-allowed;
+}
+
+.calendar-cell.selected {
+  background: #2ecc71;
+  border: 1px solid #27ae60;
+  color: white;
+  font-weight: bold;
+}
+
+.calendar-cell:hover:not(.booked) {
+  background: #b3e5fc;
+  transform: scale(1.05);
+}
+
+/* ---------- Messaging ---------- */
+.message-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.message-success {
+  border-left: 5px solid #2ecc71;
+}
+
+.message-warning {
+  border-left: 5px solid #f1c40f;
+}
+
+.message-error {
+  border-left: 5px solid #e74c3c;
+}
+
 /* ---------- Animations ---------- */
 .fade-in {
   animation: fadeIn 1s ease-out;
@@ -256,13 +441,20 @@ table tbody tr:hover {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- Form Step Transitions ---------- */
 .form-step {
   display: none;
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 0.4s ease;
 }
 
 .form-step.active {
   display: block;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-slide {
   animation: fadeSlide 0.5s ease-in-out;
 }
 
@@ -271,18 +463,14 @@ table tbody tr:hover {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- Validation Errors ---------- */
-input.error, select.error, textarea.error {
-  border-color: #f44336;
-  background-color: #fff5f5;
+/* ---------- Calendar Colors ---------- */
+.self-event {
+  background-color: #2ecc71 !important; /* green */
+  border-color: #27ae60 !important;
+  color: white !important;
 }
-.status-msg {
-  margin-top: 5px;
-  font-size: 0.9em;
-}
-.status-msg.success {
-  color: green;
-}
-.status-msg.warning {
-  color: orange;
+.assess-event {
+  background-color: #e67e22 !important; /* orange */
+  border-color: #d35400 !important;
+  color: white !important;
 }

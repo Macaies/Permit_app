@@ -1,184 +1,130 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container">
-  <!-- Progress Bar -->
-  <div class="progressbar">
-    <div class="progress-step active" data-title="Applicant"></div>
-    <div class="progress-step" data-title="Attendance"></div>
-    <div class="progress-step" data-title="Activities"></div>
-    <div class="progress-step" data-title="Insurance"></div>
-    <div class="progress-step" data-title="Community"></div>
-    <div class="progress-step" data-title="Declaration"></div>
-    <div class="progress-step" data-title="Checklist"></div>
-  </div>
+<div class="form-wrapper fade-in">
+  <h1>Event Application Form</h1>
 
-  <!-- Multi-step Form -->
-  <form action="{{ url_for('submit') }}" method="POST" enctype="multipart/form-data" id="multiStepForm">
+  <!-- NOTE: novalidate prevents the browser from blocking submit because of hidden required fields -->
+  <form id="multiStepForm" action="/submit" method="POST" enctype="multipart/form-data" novalidate>
 
-    <!-- Step 1: Applicant & Event Details -->
+    <!-- Progress Bar -->
+    <div class="progressbar">
+      <div class="progress-step active" data-title="Event Details"></div>
+      <div class="progress-step" data-title="Location"></div>
+      <div class="progress-step" data-title="Schedule"></div>
+      <div class="progress-step" data-title="Attendance"></div>
+      <div class="progress-step" data-title="Activities"></div>
+      <div class="progress-step" data-title="Documents"></div>
+      <div class="progress-step" data-title="Summary"></div>
+    </div>
+
+    <!-- Step 1: Event Details -->
     <div class="form-step active fade-slide">
-      <h2>Step 1: Applicant & Event Details</h2>
-      <label>Applicant Name *</label>
-      <input type="text" name="applicant_name" required>
+      <h2>Step 1: Event Details</h2>
 
-      <label>Organisation (if applicable)</label>
-      <input type="text" name="organisation">
-
-      <label>Contact Email *</label>
-      <input type="email" name="email" required>
-
-      <label>Phone *</label>
-      <input type="tel" name="phone" required>
-
-      <label>Event Name *</label>
-      <input type="text" name="event_name" required>
-
-      <label>Event Location *</label>
-      <input type="text" name="event_location" id="eventLocation" required>
-      <p id="locationStatus" class="status-msg"></p>
-
-      <label>Event Date *</label>
-      <input type="date" name="event_date" required>
-
-      <label>Start Time *</label>
-      <input type="time" name="start_time" required>
-
-      <label>Finish Time *</label>
-      <input type="time" name="finish_time" required>
-
-      <div class="btns-group">
-        <button type="button" class="btn btn-next">Next</button>
-      </div>
-    </div>
-
-    <!-- Step 2: Attendance & Infrastructure -->
-    <div class="form-step fade-slide">
-      <h2>Step 2: Attendance & Infrastructure</h2>
-      <label>Expected Attendance *</label>
-      <input type="number" name="attendance" min="1" required>
-
-      <label>Will the event require building approvals?</label>
-      <select name="building_approval" required>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select>
-
-      <label>Will ground-piercing devices be used?</label>
-      <select name="ground_piercing" required>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select>
-
-      <label>Duration *</label>
-      <select name="duration" required>
-        <option value="<=2 days">2 consecutive days or less</option>
-        <option value="<=12 days">≤12 non-consecutive days in 12 months</option>
-        <option value="More">More</option>
-      </select>
-
-      <div class="btns-group">
-        <button type="button" class="btn btn-prev">Previous</button>
-        <button type="button" class="btn btn-next">Next</button>
-      </div>
-    </div>
-
-    <!-- Step 3: Activities & Risk -->
-    <div class="form-step fade-slide">
-      <h2>Step 3: Activities & Risk</h2>
-      <label>Firearms, fireworks, or high-risk activities?</label>
-      <select name="high_risk" required>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select>
-
-      <label>Alcohol served or consumed?</label>
-      <select name="alcohol" required>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select>
-
-      <label>Amplified noise exceeding 95dBC?</label>
-      <select name="noise" required>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select>
-
-      <label>Vehicle/machinery access to public space?</label>
-      <select name="vehicle_access" required>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select>
-
-      <div class="btns-group">
-        <button type="button" class="btn btn-prev">Previous</button>
-        <button type="button" class="btn btn-next">Next</button>
-      </div>
-    </div>
-
-    <!-- Step 4: Insurance & Documentation -->
-    <div class="form-step fade-slide">
-      <h2>Step 4: Insurance & Documentation</h2>
-      <label>Upload Public Liability Insurance *</label>
-      <input type="file" name="insurance" accept=".pdf,.jpg,.png" required>
-
-      <label>Upload Site Map *</label>
-      <input type="file" name="site_map" accept=".pdf,.jpg,.png" required>
-
-      <label>Upload Risk Management Plan (if required)</label>
-      <input type="file" name="risk_plan" accept=".pdf,.doc,.docx">
-
-      <div class="btns-group">
-        <button type="button" class="btn btn-prev">Previous</button>
-        <button type="button" class="btn btn-next">Next</button>
-      </div>
-    </div>
-
-    <!-- Step 5: Community & Compliance -->
-    <div class="form-step fade-slide">
-      <h2>Step 5: Community & Compliance</h2>
-      <label>Waste Management Plan *</label>
-      <textarea name="waste_plan" required></textarea>
-
-      <label>First Aid available?</label>
-      <select name="first_aid" required>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-
-      <label>Number of volunteers/staff *</label>
-      <input type="number" name="volunteers" min="0" required>
-
-      <label>Communication Plan *</label>
-      <textarea name="communication_plan" required></textarea>
-
-      <label>Facilities remain accessible?</label>
-      <select name="facilities_access" required>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-
-      <div class="btns-group">
-        <button type="button" class="btn btn-prev">Previous</button>
-        <button type="button" class="btn btn-next">Next</button>
-      </div>
-    </div>
-
-    <!-- Step 6: Declaration -->
-    <div class="form-step fade-slide">
-      <h2>Step 6: Declaration</h2>
-      <p>Please confirm the information provided is accurate.</p>
-
-      <label>
-        <input type="checkbox" required>
-        I declare the information is true and correct.
+      <label>Event Name
+        <input type="text" name="event_name" required />
       </label>
 
-      <label>Full Name (Digital Signature) *</label>
-      <input type="text" name="digital_signature" required>
+      <label>Event Type
+        <select name="event_type" required>
+          <option value="">-- Select --</option>
+          <option value="Wedding">Wedding</option>
+          <option value="Community">Community Event</option>
+          <option value="Festival">Festival</option>
+          <option value="Sports">Sports</option>
+          <option value="Market">Market</option>
+        </select>
+      </label>
 
-      <label>Date *</label>
-      <input type="date" name="declaration_date" required>
+      <label>Organizer Name
+        <input type="text" name="organizer_name" required />
+      </label>
+
+      <label>Contact Email
+        <input type="email" name="contact_email" required />
+      </label>
+
+      <label>Contact Phone
+        <input type="tel" name="contact_phone" required />
+      </label>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Location -->
+    <div class="form-step fade-slide">
+      <h2>Step 2: Event Location</h2>
+
+      <!-- id="eventLocation" lets location.js give live feedback -->
+      <label>Venue / Park / Reserve
+        <input type="text" id="eventLocation" name="venue" required />
+      </label>
+
+      <div id="locationStatus" class="status-msg" aria-live="polite"></div>
+
+      <label>Address
+        <input type="text" name="venue_address" />
+      </label>
+
+      <label>Will vehicles need access to the park/reserve?
+        <select name="vehicle_access" required>
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </label>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+    <!-- Add this inside Step 2 content -->
+    <div class="form-row">
+        <label for="venue">Venue / Park / Reserve</label>
+        <input type="text" id="venue" name="venue" placeholder="Select on map or type..." />
+    </div>
+
+    <div class="form-row">
+        <label>Pick the exact location on the map</label>
+        <div id="map" style="height: 380px; border-radius: 10px; overflow: hidden; border: 1px solid #ddd;"></div>
+        <small>Search an address or click the map. We’ll record the exact point and match it to a Council park/reserve.</small>
+    </div>
+
+    <!-- Hidden GIS fields (populated by map) -->
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+    <input type="hidden" id="arcgis_feature_id" name="arcgis_feature_id">
+    <input type="hidden" id="arcgis_feature_name" name="arcgis_feature_name">
+    <input type="hidden" id="arcgis_layer" name="arcgis_layer">
+
+
+    <!-- Step 3: Schedule -->
+    <div class="form-step fade-slide">
+      <h2>Step 3: Schedule</h2>
+
+      <label>Start Date
+        <input type="date" name="start_date" required />
+      </label>
+
+      <label>End Date
+        <input type="date" name="end_date" required />
+      </label>
+
+      <label>Start Time
+        <input type="time" name="start_time" required />
+      </label>
+
+      <label>End Time
+        <input type="time" name="end_time" required />
+      </label>
+
+      <label>How many total event days?
+        <input type="number" name="total_days" min="1" required />
+      </label>
+
+      <div id="leadtimeHint" class="message-box message-warning" style="display:none;"></div>
 
       <div class="btns-group">
         <button type="button" class="btn btn-prev">Previous</button>
@@ -186,26 +132,92 @@
       </div>
     </div>
 
-    <!-- Step 7: Self-Assessable Checklist -->
+    <!-- Step 4: Attendance -->
     <div class="form-step fade-slide">
-      <h2>Step 7: Self-Assessable Event Checklist</h2>
-      <p>Please confirm your event meets the following criteria:</p>
+      <h2>Step 4: Attendance</h2>
 
-      <label><input type="checkbox" name="checklist_attendance"> Less than 200 attendees</label>
-      <label><input type="checkbox" name="checklist_infra"> No building approvals or ground piercing</label>
-      <label><input type="checkbox" name="checklist_traffic"> No traffic management</label>
-      <label><input type="checkbox" name="checklist_days"> ≤2 consecutive or ≤12 non-consecutive days</label>
-      <label><input type="checkbox" name="checklist_risk"> No high-risk activities</label>
-      <label><input type="checkbox" name="checklist_time"> Starts after 5:30am or 7am</label>
-      <label><input type="checkbox" name="checklist_finish"> Finishes before 10pm</label>
-      <label><input type="checkbox" name="checklist_alcohol"> No alcohol served or consumed</label>
-      <label><input type="checkbox" name="checklist_noise"> No amplified noise >95dBC</label>
-      <label><input type="checkbox" name="checklist_vehicle"> No vehicle access to public space</label>
-      <label><input type="checkbox" name="checklist_verge"> No verge/pathway obstruction</label>
-      <label><input type="checkbox" name="checklist_facilities"> Community facilities remain accessible</label>
-      <label><input type="checkbox" name="checklist_first_aid"> First aid available on site</label>
-      <label><input type="checkbox" name="checklist_waste"> Waste management plan in place</label>
-      <label><input type="checkbox" name="checklist_docs"> Insurance and site map uploaded</label>
+      <label>Expected number of attendees (max at one time)
+        <input type="number" name="attendance" min="1" required />
+      </label>
+
+      <label>Will alcohol be served or consumed?
+        <select name="alcohol" required>
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </label>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Activities -->
+    <div class="form-step fade-slide">
+      <h2>Step 5: Activities</h2>
+
+      <label>Will your event include fireworks, firearms, or high-risk activities?
+        <select name="high_risk" required>
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </label>
+
+      <label>Will amplified sound be used?
+        <select name="amplified_sound" required>
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </label>
+
+      <label>If Yes, what is the maximum noise level (dBC @ 15m)?
+        <input type="number" name="noise_level" min="0" placeholder="e.g. 95" />
+      </label>
+
+      <label>Do you require road closures or traffic management?
+        <select name="traffic_mgmt" required>
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </label>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Documents -->
+    <div class="form-step fade-slide">
+      <h2>Step 6: Upload Required Documents</h2>
+
+      <label>Public Liability Insurance (minimum $20M)
+        <input type="file" name="insurance_doc" required />
+      </label>
+
+      <label>Site Map
+        <input type="file" name="site_map" required />
+      </label>
+
+      <label>Other Permits/Certificates
+        <input type="file" name="other_docs" />
+      </label>
+
+      <div class="btns-group">
+        <button type="button" class="btn btn-prev">Previous</button>
+        <button type="button" class="btn btn-next">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Summary & Classification -->
+    <div class="form-step fade-slide">
+      <h2>Step 7: Summary &amp; Classification</h2>
+      <p>Based on your inputs, your event will be classified below:</p>
+
+      <ul id="checklist-summary" class="checklist"></ul>
+
+      <p><strong>Classification:</strong> <span id="classification-result">Pending...</span></p>
 
       <div class="btns-group">
         <button type="button" class="btn btn-prev">Previous</button>

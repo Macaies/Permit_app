@@ -1,10 +1,13 @@
-# location.py
-
-def validate(location_text):
+def validate(location_text: str) -> bool:
     """
-    Stub for location validation.
-    Replace with GIS API or spatial lookup later.
+    Simple heuristic for civic/open spaces.
+    Replace with GIS lookup later.
     """
-    keywords = ["park", "reserve", "oval", "foreshore", "beach", "hall"]
-    location_lower = location_text.lower()
-    return any(keyword in location_lower for keyword in keywords)
+    if not location_text:
+        return False
+    keywords = [
+        "park", "reserve", "oval", "foreshore", "beach", "hall",
+        "community centre", "plaza", "square", "public", "green"
+    ]
+    l = location_text.lower()
+    return any(k in l for k in keywords)
