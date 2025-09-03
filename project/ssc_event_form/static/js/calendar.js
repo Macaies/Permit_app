@@ -1,4 +1,4 @@
-from datetime import datetime
+/*from datetime import datetime
 
 def reserve(event_date_str, start_time_str):
     """
@@ -19,4 +19,8 @@ def reserve(event_date_str, start_time_str):
 
         return "✅ Date and time are available."
     except Exception as e:
-        return f"❌ Invalid date/time format: {e}"
+        return f"❌ Invalid date/time format: {e}" 
+
+*/
+
+// placeholder (add admin-side interactions later)

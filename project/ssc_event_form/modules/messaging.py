@@ -37,3 +37,10 @@ def send(to_email, event_name):
         print("✅ Email sent to", to_email)
     except Exception as e:
         print("❌ Email failed:", e)
+def send(to_email, event_name):
+    """
+    Stub: print to console. Wire SMTP/SendGrid later.
+    """
+    if not to_email:
+        return
+    print(f"[mail] Confirmation → {to_email}: Your event '{event_name}' was received.")

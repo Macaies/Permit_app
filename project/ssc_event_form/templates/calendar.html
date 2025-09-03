@@ -1,21 +1,126 @@
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
+{% extends "base.html" %}
+{% block content %}
+<div class="site-main fade-in">
+  <h2>Event Calendar</h2>
 
-<div id="calendar"></div>
+  <div id="calendar"></div>
+</div>
+
+<!-- FullCalendar CDN -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<style>
+  /* Colors by status */
+  .fc-approved  { background: #2ecc71 !important; border-color: #27ae60 !important; }
+  .fc-pending   { background: #f39c12 !important; border-color: #d68910 !important; }
+  .fc-rejected  { background: #e74c3c !important; border-color: #c0392b !important; }
+  .action-sheet {
+    position: fixed; z-index: 9999; bottom: 20px; right: 20px;
+    background: #fff; border: 1px solid #ddd; border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.15);
+    padding: 12px; display: none; min-width: 220px;
+  }
+  .action-sheet h4 { margin: 0 0 8px; font-size: 14px; }
+  .action-sheet button { display:block; width:100%; margin:6px 0; padding:8px; border-radius:8px; }
+</style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      selectable: true,
-      dateClick: function (info) {
-        alert("You clicked: " + info.dateStr);
-        // Later: redirect or open modal to reserve
-      },
-      events: '/events' // Flask route to fetch events
-    });
-    calendar.render();
-  });
-</script>
+document.addEventListener("DOMContentLoaded", () => {
+  const calendarEl = document.getElementById("calendar");
+  const sheet = document.createElement("div");
+  sheet.className = "action-sheet";
+  document.body.appendChild(sheet);
 
+  const cal = new FullCalendar.Calendar(calendarEl, {
+    initialView: "timeGridWeek",
+    height: "auto",
+    nowIndicator: true,
+    selectable: true,           // drag to select to create
+    selectMirror: true,
+    slotMinTime: "05:00:00",
+    slotMaxTime: "23:00:00",
+    eventTimeFormat: { hour: "2-digit", minute: "2-digit", hour12: false },
+
+    events: "/api/events",
+
+    select: async (info) => {
+      // Quick create (book) via prompt — optional for admins
+      const title = prompt("Book this slot as (event name)?");
+      if (!title) { return cal.unselect(); }
+
+      // naive quick-book to today’s location (or prompt for one)
+      const location = prompt("Location / Venue?", "Park/Reserve");
+
+      // Create booked event via a minimal POST to your app:
+      try {
+        const payload = {
+          event_name: title,
+          location: location || "",
+          start_date: info.startStr.slice(0,10),
+          end_date:   info.endStr.slice(0,10),
+          start_time: info.startStr.slice(11,16),
+          end_time:   info.endStr.slice(11,16)
+        };
+        // reuse your /submit path would require many fields; instead create a small admin-only endpoint if you prefer.
+        // For now we just create a placeholder by posting to a simple helper route (optional).
+        const ok = await fetch("/admin/quick_book", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(payload)
+        }).then(r => r.ok);
+        if (!ok) alert("Failed to create booking");
+        cal.refetchEvents();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        cal.unselect();
+      }
+    },
+
+    eventClick: (info) => {
+      const { id } = info.event;
+      const { classification, status, location } = info.event.extendedProps;
+      sheet.innerHTML = `
+        <h4>${info.event.title}</h4>
+        <div style="font-size:12px;margin-bottom:8px;">
+          <div><b>Status:</b> ${status}</div>
+          <div><b>Classification:</b> ${classification}</div>
+          <div><b>Location:</b> ${location || "-"}</div>
+        </div>
+        <button data-act="Approved">Book (Approve)</button>
+        <button data-act="Pending">Mark Pending</button>
+        <button data-act="Rejected">Not approve / Cancel</button>
+        <button data-act="close">Close</button>
+      `;
+      sheet.style.display = "block";
+
+      sheet.querySelectorAll("button").forEach(btn => {
+        btn.onclick = async () => {
+          const act = btn.dataset.act;
+          if (act === "close") { sheet.style.display = "none"; return; }
+          try {
+            const resp = await fetch(`/api/event/${id}/status`, {
+              method: "POST",
+              headers: {"Content-Type":"application/json"},
+              body: JSON.stringify({ status: act })
+            });
+            if (!resp.ok) {
+              const j = await resp.json().catch(()=>({}));
+              alert("Failed: " + (j.error || resp.statusText));
+            }
+            sheet.style.display = "none";
+            cal.refetchEvents();
+          } catch (e) {
+            console.error(e);
+            alert("Update failed");
+          }
+        };
+      });
+    }
+  });
+
+  cal.render();
+});
+</script>
+{% endblock %}
